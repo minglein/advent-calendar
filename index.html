@@ -1,0 +1,408 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.3">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="de"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Digitaler Adventskalender 💌&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>:root {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--bg: #f5f3ff;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--card: #ffffff;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--accent: #e11d48;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--accent-soft: #fee2e2;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--text-main: #111827;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--text-muted: #6b7280;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--door-bg: #111827;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--door-open-bg: #f97316;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--door-locked-bg: #9ca3af;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>* {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>box-sizing: border-box;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: radial-gradient(circle at top, #fef3c7, #e0f2fe, #ede9fe);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>min-height: 100vh;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 1.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--text-main);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.wrapper {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>max-width: 900px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: rgba(255, 255, 255, 0.85);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>backdrop-filter: blur(16px);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 1.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 2rem 1.5rem 2.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>@media (min-width: 768px) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.wrapper {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>padding: 2.5rem 3rem 3rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>header {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 2rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>header h1 {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: clamp(1.8rem, 3vw, 2.4rem);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 0.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>header p {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--text-muted);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.95rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>max-width: 32rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 0 auto;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.calendar {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: grid;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>grid-template-columns: repeat(4, minmax(0, 1fr));</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 0.8rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>@media (min-width: 640px) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.calendar {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>grid-template-columns: repeat(6, minmax(0, 1fr));</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>@media (min-width: 1024px) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.calendar {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>grid-template-columns: repeat(8, minmax(0, 1fr));</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.door {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>position: relative;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding-top: 100%; /* square */</p>
+<p class="p1"><span class="Apple-converted-space">      </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>perspective: 800px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.door-inner {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>inset: 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 0.9rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>transition: transform 0.4s ease, box-shadow 0.4s ease;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>transform-style: preserve-3d;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>box-shadow: 0 6px 14px rgba(15, 23, 42, 0.18);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.door-front,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.door-back {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>inset: 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>backface-visibility: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 0.4rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.door-front {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: var(--door-bg);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #f9fafb;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 700;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 1.4rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>letter-spacing: 0.05em;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.door-front span {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: inline-flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 2.1rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>height: 2.1rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 999px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: 2px solid rgba(248, 250, 252, 0.3);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.door-back {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: var(--door-open-bg);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #111827;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>transform: rotateY(180deg);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.85rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>line-height: 1.3;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 0.6rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.door-open .door-inner {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>transform: rotateY(180deg) translateY(2px);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>box-shadow: 0 4px 10px rgba(15, 23, 42, 0.25);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.door-locked .door-front {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: var(--door-locked-bg);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>opacity: 0.85;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.door-locked {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>cursor: not-allowed;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.door:hover:not(.door-locked) .door-inner {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>transform: translateY(-3px);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>box-shadow: 0 10px 20px rgba(15, 23, 42, 0.25);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.door-back strong {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: block;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 0.35rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.9rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.door-back a {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 0.4rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: inline-flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.78rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>text-decoration: none;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 999px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid rgba(15, 23, 42, 0.2);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 0.16rem 0.6rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>footer {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 1.8rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.8rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--text-muted);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>footer button {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: none;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: transparent;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>text-decoration: underline;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.8rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--accent);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.pill {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: inline-flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 0.2rem 0.6rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 999px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: var(--accent-soft);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--accent);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 0.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="wrapper"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;header&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="pill"&gt;Für dich 💝&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;h1&gt;Unser digitaler Adventskalender&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>Jeden Tag wartet eine kleine Überraschung auf dich.</p>
+<p class="p1"><span class="Apple-converted-space">        </span>Klicke auf das Türchen mit dem heutigen Datum, um es zu öffnen.</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/header&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;main class="calendar" id="calendar"&gt;&lt;/main&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;footer&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>Türen, die einmal geöffnet wurden, bleiben auf (auf diesem Gerät).</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;br /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button id="reset"&gt;Alles zurücksetzen&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/footer&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>// === CONFIG: Deine Inhalte für jeden Tag ====================</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const doorContents = {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>1: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Dezember 1",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>text: "Heute machen wir es uns mit Tee und einer Kerze gemütlich. 🕯️",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>2: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Dezember 2",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>text: "Ich bin dankbar, dass es dich gibt. Heute: eine extra lange Umarmung. 🤗",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>3: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "Dezember 3",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>text: "Playlist-Surprise! Hör dir unsere Advents-Playlist an.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>link: "https://example.com/deine-playlist",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>linkLabel: "Zur Playlist 🎵",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>// ... Fülle nach und nach 4–24 mit deinen eigenen Texten</p>
+<p class="p1"><span class="Apple-converted-space">      </span>24: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: "24. Dezember",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>text: "Frohe Weihnachten, mein Lieblingsmensch. Danke, dass du bei mir bist. 🎄❤️",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// Wenn ein Tag keinen speziellen Inhalt hat, wird dieser Fallback genutzt:</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function getDefaultContent(day) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: `Türchen ${day}`,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>text: "Eine kleine Überraschung wartet bald hier… 💫",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>};</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// === SETTINGS: Datumssperre aktivieren/deaktivieren =========</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const ENABLE_DATE_LOCK = true; // auf false setzen, wenn alle Türen sofort geöffnet werden dürfen</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// === LOGIK ===================================================</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const calendarEl = document.getElementById("calendar");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const STORAGE_KEY = "advent_calendar_opened";</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function loadOpenedState() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const saved = localStorage.getItem(STORAGE_KEY);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return saved ? JSON.parse(saved) : {};</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} catch (e) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return {};</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function saveOpenedState(state) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>localStorage.setItem(STORAGE_KEY, JSON.stringify(state));</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} catch (e) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>// ignore</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const openedState = loadOpenedState();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function isDoorUnlocked(day) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!ENABLE_DATE_LOCK) return true;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const now = new Date();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const month = now.getMonth(); // 0 = Januar, 11 = Dezember</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const date = now.getDate();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>// Türchen sind standardmäßig ab 1. Dezember freigeschaltet</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (month &gt; 11) return true; // nach Dezember alles offen</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (month &lt; 11) return false; // vor Dezember alles zu</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return day &lt;= date; // im Dezember: jeweils bis zum heutigen Tag</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function createDoor(day) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const door = document.createElement("div");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>door.className = "door";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>door.dataset.day = day;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!isDoorUnlocked(day)) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>door.classList.add("door-locked");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (openedState[day]) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>door.classList.add("door-open");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const inner = document.createElement("div");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>inner.className = "door-inner";</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const front = document.createElement("div");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>front.className = "door-front";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>front.innerHTML = `&lt;span&gt;${day}&lt;/span&gt;`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const back = document.createElement("div");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>back.className = "door-back";</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const content = doorContents[day] || getDefaultContent(day);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>back.innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;strong&gt;${content.title}&lt;/strong&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span&gt;${content.text}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>${</p>
+<p class="p1"><span class="Apple-converted-space">            </span>content.link</p>
+<p class="p1"><span class="Apple-converted-space">              </span>? `&lt;br/&gt;&lt;a href="${content.link}" target="_blank" rel="noopener noreferrer"&gt;${content.linkLabel || "Zur Überraschung"}&lt;/a&gt;`</p>
+<p class="p1"><span class="Apple-converted-space">              </span>: ""</p>
+<p class="p1"><span class="Apple-converted-space">          </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>inner.appendChild(front);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>inner.appendChild(back);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>door.appendChild(inner);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>door.addEventListener("click", () =&gt; handleDoorClick(door, day));</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>return door;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function handleDoorClick(door, day) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (door.classList.contains("door-locked")) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const now = new Date();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (now.getMonth() !== 11) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>alert("Die Türen öffnen sich im Dezember 🎄");</p>
+<p class="p1"><span class="Apple-converted-space">        </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>alert("Dieses Türchen kannst du erst am passenden Tag öffnen ✨");</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!door.classList.contains("door-open")) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>door.classList.add("door-open");</p>
+<p class="p1"><span class="Apple-converted-space">        </span>openedState[day] = true;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>saveOpenedState(openedState);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Optional: Schon geöffnete Tür nochmal anklicken -&gt; nichts tun</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function buildCalendar() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>for (let day = 1; day &lt;= 24; day++) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const door = createDoor(day);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>calendarEl.appendChild(door);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById("reset").addEventListener("click", () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (</p>
+<p class="p1"><span class="Apple-converted-space">        </span>confirm(</p>
+<p class="p1"><span class="Apple-converted-space">          </span>"Möchtest du wirklich alle Türchen zurücksetzen? Sie werden wieder geschlossen."</p>
+<p class="p1"><span class="Apple-converted-space">        </span>)</p>
+<p class="p1"><span class="Apple-converted-space">      </span>) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>saveOpenedState({});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>window.location.reload();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>buildCalendar();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
