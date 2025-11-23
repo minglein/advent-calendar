@@ -179,6 +179,16 @@
       padding: 0.16rem 0.6rem;
     }
 
+    .door-back img {
+      margin-top: 0.4rem;
+      max-width: 90%;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.35);
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     footer {
       margin-top: 1.8rem;
       text-align: center;
@@ -380,6 +390,11 @@
     const authError = document.getElementById("auth-error");
     const rememberMeCheckbox = document.getElementById("remember-me");
 
+    const calendarEl = document.getElementById("calendar");
+    const STORAGE_KEY = "advent_calendar_opened";
+
+    const ENABLE_DATE_LOCK = true; // auf false setzen, wenn alle Türen immer offen sein dürfen
+
     function showApp() {
       authScreen.classList.add("hidden");
       appWrapper.classList.remove("hidden");
@@ -401,54 +416,47 @@
           } catch (e) {}
         }
         showApp();
-        // Build calendar only after successful auth
         initCalendar();
       } else {
-        authError.textContent = "Das Passwort ist leider falsch. Versuch es nochmal. 💔";
+        authError.textContent =
+          "Das Passwort ist leider falsch. Versuch es nochmal. 💔";
         passwordInput.focus();
         passwordInput.select();
       }
     }
 
-    // Check if already authenticated on this device
-    (function checkExistingAuth() {
-      try {
-        const ok = localStorage.getItem(AUTH_STORAGE_KEY) === "true";
-        if (ok) {
-          showApp();
-          initCalendar();
-        }
-      } catch (e) {}
-    })();
-
-    authButton.addEventListener("click", handleAuthAttempt);
-    passwordInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        handleAuthAttempt();
-      }
-    });
-
     // === ADVENT CALENDAR LOGIC ====================
 
+    // Inhalte für die einzelnen Tage
     const doorContents = {
       1: {
-        title: "Dezember 1",
+        title: "1. Dezember",
         text: "Heute machen wir es uns mit Tee und einer Kerze gemütlich. 🕯️",
+        // img: "images/tag1.jpg"
       },
       2: {
-        title: "Dezember 2",
+        title: "2. Dezember",
         text: "Ich bin dankbar, dass es dich gibt. Heute: eine extra lange Umarmung. 🤗",
+        // img: "images/tag2.jpg"
       },
       3: {
-        title: "Dezember 3",
+        title: "3. Dezember",
         text: "Playlist-Surprise! Hör dir unsere Advents-Playlist an.",
         link: "https://example.com/deine-playlist",
         linkLabel: "Zur Playlist 🎵",
+        // img: "images/tag3.jpg"
       },
-      // ... weitere Tage hier ergänzen ...
+      // Beispiel mit Bild:
+      4: {
+        title: "4. Dezember",
+        text: "Ein Lieblingsmoment von uns zwei. 💕",
+        img: "images/tag4.jpg" // Datei vorher in GitHub unter images/tag4.jpg hochladen
+      },
+      // ... weitere Tage 5–23 hier ergänzen ...
       24: {
         title: "24. Dezember",
         text: "Frohe Weihnachten, mein Lieblingsmensch. Danke, dass du bei mir bist. 🎄❤️",
+        // img: "images/tag24.jpg"
       },
     };
 
@@ -458,11 +466,6 @@
         text: "Eine kleine Überraschung wartet bald hier… 💫",
       };
     }
-
-    const ENABLE_DATE_LOCK = true;
-
-    const calendarEl = document.getElementById("calendar");
-    const STORAGE_KEY = "advent_calendar_opened";
 
     function loadOpenedState() {
       try {
@@ -488,9 +491,9 @@
       const month = now.getMonth(); // 0 = Januar, 11 = Dezember
       const date = now.getDate();
 
-      if (month > 11) return true;
-      if (month < 11) return false;
-      return day <= date;
+      if (month > 11) return true;  // nach Dezember alles offen
+      if (month < 11) return false; // vor Dezember alles zu
+      return day <= date; // im Dezember: bis zum heutigen Tag
     }
 
     function createDoor(day) {
@@ -511,16 +514,25 @@
 
       const front = document.createElement("div");
       front.className = "door-front";
+
+      const content = doorContents[day] || getDefaultContent(day);
+
+      // Wenn du statt Zahl ein Türchen-Bild vorne willst, kannst du hier umschalten.
+      // Standard: Zahl anzeigen:
       front.innerHTML = `<span>${day}</span>`;
 
       const back = document.createElement("div");
       back.className = "door-back";
 
-      const content = doorContents[day] || getDefaultContent(day);
       back.innerHTML = `
         <div>
           <strong>${content.title}</strong>
           <span>${content.text}</span>
+          ${
+            content.img
+              ? `<br/><img src="${content.img}" alt="Überraschung für Tag ${day}" />`
+              : ""
+          }
           ${
             content.link
               ? `<br/><a href="${content.link}" target="_blank" rel="noopener noreferrer">${content.linkLabel || "Zur Überraschung"}</a>`
@@ -557,6 +569,11 @@
     }
 
     function buildCalendar() {
+      // Vorheriger Inhalt leeren (wichtig nach Reset)
+      while (calendarEl.firstChild) {
+        calendarEl.removeChild(calendarEl.firstChild);
+      }
+
       for (let day = 1; day <= 24; day++) {
         const door = createDoor(day);
         calendarEl.appendChild(door);
@@ -564,25 +581,46 @@
     }
 
     function initCalendar() {
-      // Guard: only build once
-      if (calendarEl && calendarEl.childElementCount === 0) {
-        openedState = loadOpenedState();
-        buildCalendar();
-        const resetBtn = document.getElementById("reset");
-        if (resetBtn) {
-          resetBtn.addEventListener("click", () => {
-            if (
-              confirm(
-                "Möchtest du wirklich alle Türchen zurücksetzen? Sie werden wieder geschlossen."
-              )
-            ) {
-              saveOpenedState({});
-              window.location.reload();
-            }
-          });
-        }
-      }
+      openedState = loadOpenedState();
+      buildCalendar();
     }
+
+    // === BOOTSTRAP: alles anschließen, wenn DOM bereit ist ======
+    document.addEventListener("DOMContentLoaded", () => {
+      // Auth-Events
+      authButton.addEventListener("click", handleAuthAttempt);
+      passwordInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          handleAuthAttempt();
+        }
+      });
+
+      // Reset-Button
+      const resetBtn = document.getElementById("reset");
+      if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+          if (
+            confirm(
+              "Möchtest du wirklich alle Türchen zurücksetzen? Sie werden wieder geschlossen."
+            )
+          ) {
+            saveOpenedState({});
+            // Kein spezieller Auth-Reset: Passwort bleibt gemerkt,
+            // wir bauen den Kalender nach dem Reload einfach neu.
+            window.location.reload();
+          }
+        });
+      }
+
+      // Prüfen, ob bereits authentifiziert
+      try {
+        const ok = localStorage.getItem(AUTH_STORAGE_KEY) === "true";
+        if (ok) {
+          showApp();
+          initCalendar();
+        }
+      } catch (e) {}
+    });
   </script>
 </body>
 </html>
