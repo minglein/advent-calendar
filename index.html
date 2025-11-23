@@ -488,8 +488,8 @@
       const month = now.getMonth(); // 0 = Januar, 11 = Dezember
       const date = now.getDate();
 
-      if (month > 11) return true;
-      if (month < 11) return false;
+      if (month > 10) return true;
+      if (month < 10) return false;
       return day <= date;
     }
 
@@ -541,7 +541,7 @@
     function handleDoorClick(door, day) {
       if (door.classList.contains("door-locked")) {
         const now = new Date();
-        if (now.getMonth() !== 11) {
+        if (now.getMonth() !== 10) {
           alert("Die Türen öffnen sich im Dezember 🎄");
         } else {
           alert("Dieses Türchen kannst du erst am passenden Tag öffnen ✨");
