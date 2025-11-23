@@ -2,10 +2,381 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>Testseite</title>
+  <title>Digitaler Adventskalender 💌</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      --bg: #f5f3ff;
+      --card: #ffffff;
+      --accent: #e11d48;
+      --accent-soft: #fee2e2;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --door-bg: #111827;
+      --door-open-bg: #f97316;
+      --door-locked-bg: #9ca3af;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: radial-gradient(circle at top, #fef3c7, #e0f2fe, #ede9fe);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      color: var(--text-main);
+    }
+
+    .wrapper {
+      max-width: 900px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      border-radius: 1.5rem;
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);
+      padding: 2rem 1.5rem 2.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .wrapper {
+        padding: 2.5rem 3rem 3rem;
+      }
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    header h1 {
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 32rem;
+      margin: 0 auto;
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.8rem;
+    }
+
+    @media (min-width: 640px) {
+      .calendar {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .calendar {
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+      }
+    }
+
+    .door {
+      position: relative;
+      padding-top: 100%; /* square */
+      cursor: pointer;
+      perspective: 800px;
+    }
+
+    .door-inner {
+      position: absolute;
+      inset: 0;
+      border-radius: 0.9rem;
+      overflow: hidden;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      transform-style: preserve-3d;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.18);
+    }
+
+    .door-front,
+    .door-back {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backface-visibility: hidden;
+      padding: 0.4rem;
+    }
+
+    .door-front {
+      background: var(--door-bg);
+      color: #f9fafb;
+      font-weight: 700;
+      font-size: 1.4rem;
+      letter-spacing: 0.05em;
+    }
+
+    .door-front span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.1rem;
+      height: 2.1rem;
+      border-radius: 999px;
+      border: 2px solid rgba(248, 250, 252, 0.3);
+    }
+
+    .door-back {
+      background: var(--door-open-bg);
+      color: #111827;
+      transform: rotateY(180deg);
+      text-align: center;
+      font-size: 0.85rem;
+      line-height: 1.3;
+      padding: 0.6rem;
+    }
+
+    .door-open .door-inner {
+      transform: rotateY(180deg) translateY(2px);
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.25);
+    }
+
+    .door-locked .door-front {
+      background: var(--door-locked-bg);
+      opacity: 0.85;
+    }
+
+    .door-locked {
+      cursor: not-allowed;
+    }
+
+    .door:hover:not(.door-locked) .door-inner {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.25);
+    }
+
+    .door-back strong {
+      display: block;
+      margin-bottom: 0.35rem;
+      font-size: 0.9rem;
+    }
+
+    .door-back a {
+      margin-top: 0.4rem;
+      display: inline-flex;
+      font-size: 0.78rem;
+      text-decoration: none;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 23, 42, 0.2);
+      padding: 0.16rem 0.6rem;
+    }
+
+    footer {
+      margin-top: 1.8rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    footer button {
+      border: none;
+      background: transparent;
+      text-decoration: underline;
+      cursor: pointer;
+      font-size: 0.8rem;
+      padding: 0;
+      color: var(--accent);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+  </style>
 </head>
 <body>
-  <h1>Hallo 🎄</h1>
-  <p>Wenn du das hier als normale Überschrift und Text siehst, dann rendert GitHub die Seite korrekt.</p>
+  <div class="wrapper">
+    <header>
+      <div class="pill">Für dich 💝</div>
+      <h1>Unser digitaler Adventskalender</h1>
+      <p>
+        Jeden Tag wartet eine kleine Überraschung auf dich.
+        Klicke auf das Türchen mit dem heutigen Datum, um es zu öffnen.
+      </p>
+    </header>
+
+    <main class="calendar" id="calendar"></main>
+
+    <footer>
+      <span>
+        Türen, die einmal geöffnet wurden, bleiben auf (auf diesem Gerät).
+      </span>
+      <br />
+      <button id="reset">Alles zurücksetzen</button>
+    </footer>
+  </div>
+
+  <script>
+    // === CONFIG: Deine Inhalte für jeden Tag ====================
+
+    const doorContents = {
+      1: {
+        title: "Dezember 1",
+        text: "Heute machen wir es uns mit Tee und einer Kerze gemütlich. 🕯️",
+      },
+      2: {
+        title: "Dezember 2",
+        text: "Ich bin dankbar, dass es dich gibt. Heute: eine extra lange Umarmung. 🤗",
+      },
+      3: {
+        title: "Dezember 3",
+        text: "Playlist-Surprise! Hör dir unsere Advents-Playlist an.",
+        link: "https://example.com/deine-playlist",
+        linkLabel: "Zur Playlist 🎵",
+      },
+      24: {
+        title: "24. Dezember",
+        text: "Frohe Weihnachten, mein Lieblingsmensch. Danke, dass du bei mir bist. 🎄❤️",
+      },
+    };
+
+    function getDefaultContent(day) {
+      return {
+        title: `Türchen ${day}`,
+        text: "Eine kleine Überraschung wartet bald hier… 💫",
+      };
+    }
+
+    const ENABLE_DATE_LOCK = true;
+
+    const calendarEl = document.getElementById("calendar");
+    const STORAGE_KEY = "advent_calendar_opened";
+
+    function loadOpenedState() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        return saved ? JSON.parse(saved) : {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveOpenedState(state) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {}
+    }
+
+    const openedState = loadOpenedState();
+
+    function isDoorUnlocked(day) {
+      if (!ENABLE_DATE_LOCK) return true;
+
+      const now = new Date();
+      const month = now.getMonth();
+      const date = now.getDate();
+
+      if (month > 11) return true;
+      if (month < 11) return false;
+      return day <= date;
+    }
+
+    function createDoor(day) {
+      const door = document.createElement("div");
+      door.className = "door";
+      door.dataset.day = day;
+
+      if (!isDoorUnlocked(day)) {
+        door.classList.add("door-locked");
+      }
+
+      if (openedState[day]) {
+        door.classList.add("door-open");
+      }
+
+      const inner = document.createElement("div");
+      inner.className = "door-inner";
+
+      const front = document.createElement("div");
+      front.className = "door-front";
+      front.innerHTML = `<span>${day}</span>`;
+
+      const back = document.createElement("div");
+      back.className = "door-back";
+
+      const content = doorContents[day] || getDefaultContent(day);
+      back.innerHTML = `
+        <div>
+          <strong>${content.title}</strong>
+          <span>${content.text}</span>
+          ${
+            content.link
+              ? `<br/><a href="${content.link}" target="_blank" rel="noopener noreferrer">${content.linkLabel || "Zur Überraschung"}</a>`
+              : ""
+          }
+        </div>
+      `;
+
+      inner.appendChild(front);
+      inner.appendChild(back);
+      door.appendChild(inner);
+
+      door.addEventListener("click", () => handleDoorClick(door, day));
+
+      return door;
+    }
+
+    function handleDoorClick(door, day) {
+      if (door.classList.contains("door-locked")) {
+        const now = new Date();
+        if (now.getMonth() !== 11) {
+          alert("Die Türen öffnen sich im Dezember 🎄");
+        } else {
+          alert("Dieses Türchen kannst du erst am passenden Tag öffnen ✨");
+        }
+        return;
+      }
+
+      if (!door.classList.contains("door-open")) {
+        door.classList.add("door-open");
+        openedState[day] = true;
+        saveOpenedState(openedState);
+      }
+    }
+
+    function buildCalendar() {
+      for (let day = 1; day <= 24; day++) {
+        const door = createDoor(day);
+        calendarEl.appendChild(door);
+      }
+    }
+
+    document.getElementById("reset").addEventListener("click", () => {
+      if (
+        confirm(
+          "Möchtest du wirklich alle Türchen zurücksetzen? Sie werden wieder geschlossen."
+        )
+      ) {
+        saveOpenedState({});
+        window.location.reload();
+      }
+    });
+
+    buildCalendar();
+  </script>
 </body>
 </html>
