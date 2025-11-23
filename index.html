@@ -16,6 +16,7 @@
       --door-bg: #111827;
       --door-open-bg: #f97316;
       --door-locked-bg: #9ca3af;
+      --error: #b91c1c;
     }
 
     * {
@@ -206,10 +207,144 @@
       font-size: 0.75rem;
       margin-bottom: 0.5rem;
     }
+
+    /* === PASSWORD SCREEN === */
+
+    #auth-screen {
+      max-width: 420px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(16px);
+      border-radius: 1.5rem;
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);
+      padding: 2.2rem 2rem 2.4rem;
+    }
+
+    #auth-screen h1 {
+      font-size: 1.6rem;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+
+    #auth-screen p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 1.3rem;
+    }
+
+    .auth-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+      display: block;
+    }
+
+    .auth-input {
+      width: 100%;
+      padding: 0.6rem 0.75rem;
+      border-radius: 0.75rem;
+      border: 1px solid #d1d5db;
+      font-size: 0.95rem;
+      margin-bottom: 0.75rem;
+      outline: none;
+    }
+
+    .auth-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(225, 29, 72, 0.3);
+    }
+
+    .auth-button {
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      padding: 0.65rem 0.8rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 0.3rem;
+      background: linear-gradient(to right, #e11d48, #fb7185);
+      color: #f9fafb;
+      box-shadow: 0 10px 20px rgba(190, 24, 93, 0.4);
+    }
+
+    .auth-button:active {
+      transform: translateY(1px);
+      box-shadow: 0 6px 12px rgba(190, 24, 93, 0.5);
+    }
+
+    .auth-extra {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .auth-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .auth-checkbox input {
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+    }
+
+    .auth-error {
+      margin-top: 0.4rem;
+      font-size: 0.8rem;
+      color: var(--error);
+      min-height: 1em;
+    }
+
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
-  <div class="wrapper">
+  <!-- PASSWORD SCREEN -->
+  <div id="auth-screen">
+    <h1>Nur für dich ✨</h1>
+    <p>
+      Dieser Adventskalender ist passwortgeschützt.
+      <br />Gib unser geheimes Wort ein, um die Türchen zu öffnen.
+    </p>
+
+    <label for="password-input" class="auth-label">Passwort</label>
+    <input
+      id="password-input"
+      type="password"
+      class="auth-input"
+      autocomplete="current-password"
+      placeholder="Geheimes Wort eingeben"
+    />
+
+    <button id="auth-button" class="auth-button">Türchen öffnen</button>
+
+    <div class="auth-extra">
+      <label class="auth-checkbox">
+        <input type="checkbox" id="remember-me" checked />
+        <span>Auf diesem Gerät merken</span>
+      </label>
+      <span>💌</span>
+    </div>
+
+    <div id="auth-error" class="auth-error"></div>
+  </div>
+
+  <!-- MAIN APP (hidden until unlocked) -->
+  <div id="app" class="wrapper hidden">
     <header>
       <div class="pill">Für dich 💝</div>
       <h1>Unser digitaler Adventskalender</h1>
@@ -231,7 +366,69 @@
   </div>
 
   <script>
-    // === CONFIG: Deine Inhalte für jeden Tag ====================
+    // === SIMPLE PASSWORD PROTECTION (front-end only) =============
+
+    // 🔐 Change this to your secret password
+    const CALENDAR_PASSWORD = "merryxmas";
+
+    const AUTH_STORAGE_KEY = "advent_calendar_auth_ok";
+
+    const authScreen = document.getElementById("auth-screen");
+    const appWrapper = document.getElementById("app");
+    const passwordInput = document.getElementById("password-input");
+    const authButton = document.getElementById("auth-button");
+    const authError = document.getElementById("auth-error");
+    const rememberMeCheckbox = document.getElementById("remember-me");
+
+    function showApp() {
+      authScreen.classList.add("hidden");
+      appWrapper.classList.remove("hidden");
+    }
+
+    function handleAuthAttempt() {
+      const entered = passwordInput.value.trim();
+
+      if (!entered) {
+        authError.textContent = "Bitte gib ein Passwort ein.";
+        return;
+      }
+
+      if (entered === CALENDAR_PASSWORD) {
+        authError.textContent = "";
+        if (rememberMeCheckbox.checked) {
+          try {
+            localStorage.setItem(AUTH_STORAGE_KEY, "true");
+          } catch (e) {}
+        }
+        showApp();
+        // Build calendar only after successful auth
+        initCalendar();
+      } else {
+        authError.textContent = "Das Passwort ist leider falsch. Versuch es nochmal. 💔";
+        passwordInput.focus();
+        passwordInput.select();
+      }
+    }
+
+    // Check if already authenticated on this device
+    (function checkExistingAuth() {
+      try {
+        const ok = localStorage.getItem(AUTH_STORAGE_KEY) === "true";
+        if (ok) {
+          showApp();
+          initCalendar();
+        }
+      } catch (e) {}
+    })();
+
+    authButton.addEventListener("click", handleAuthAttempt);
+    passwordInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        handleAuthAttempt();
+      }
+    });
+
+    // === ADVENT CALENDAR LOGIC ====================
 
     const doorContents = {
       1: {
@@ -248,6 +445,7 @@
         link: "https://example.com/deine-playlist",
         linkLabel: "Zur Playlist 🎵",
       },
+      // ... weitere Tage hier ergänzen ...
       24: {
         title: "24. Dezember",
         text: "Frohe Weihnachten, mein Lieblingsmensch. Danke, dass du bei mir bist. 🎄❤️",
@@ -281,13 +479,13 @@
       } catch (e) {}
     }
 
-    const openedState = loadOpenedState();
+    let openedState = loadOpenedState();
 
     function isDoorUnlocked(day) {
       if (!ENABLE_DATE_LOCK) return true;
 
       const now = new Date();
-      const month = now.getMonth();
+      const month = now.getMonth(); // 0 = Januar, 11 = Dezember
       const date = now.getDate();
 
       if (month > 11) return true;
@@ -365,18 +563,26 @@
       }
     }
 
-    document.getElementById("reset").addEventListener("click", () => {
-      if (
-        confirm(
-          "Möchtest du wirklich alle Türchen zurücksetzen? Sie werden wieder geschlossen."
-        )
-      ) {
-        saveOpenedState({});
-        window.location.reload();
+    function initCalendar() {
+      // Guard: only build once
+      if (calendarEl && calendarEl.childElementCount === 0) {
+        openedState = loadOpenedState();
+        buildCalendar();
+        const resetBtn = document.getElementById("reset");
+        if (resetBtn) {
+          resetBtn.addEventListener("click", () => {
+            if (
+              confirm(
+                "Möchtest du wirklich alle Türchen zurücksetzen? Sie werden wieder geschlossen."
+              )
+            ) {
+              saveOpenedState({});
+              window.location.reload();
+            }
+          });
+        }
       }
-    });
-
-    buildCalendar();
+    }
   </script>
 </body>
 </html>
