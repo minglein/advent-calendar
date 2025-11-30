@@ -320,6 +320,7 @@
     .hidden {
       display: none;
     }
+
     .header-image {
       display: flex;
       justify-content: center;
@@ -329,8 +330,8 @@
 
     .header-image img {
       width: 100%;
-      max-width: 420px; /* adjust size here */
-      border-radius: 24px; /* soft edges */
+      max-width: 420px;
+      border-radius: 24px;
       box-shadow: 0 10px 26px rgba(15, 23, 42, 0.25);
       object-fit: cover;
     }
@@ -394,9 +395,7 @@
   <script>
     // === SIMPLE PASSWORD PROTECTION (front-end only) =============
 
-    // 🔐 Change this to your secret password
     const CALENDAR_PASSWORD = "merryxmas";
-
     const AUTH_STORAGE_KEY = "advent_calendar_auth_ok";
 
     const authScreen = document.getElementById("auth-screen");
@@ -409,7 +408,8 @@
     const calendarEl = document.getElementById("calendar");
     const STORAGE_KEY = "advent_calendar_opened";
 
-    const ENABLE_DATE_LOCK = false; // auf false setzen, wenn alle Türen immer offen sein dürfen
+    // aktuell: kein Datums-Lock, damit du alles testen kannst
+    const ENABLE_DATE_LOCK = false;
 
     function showApp() {
       authScreen.classList.add("hidden");
@@ -443,9 +443,8 @@
 
     // === ADVENT CALENDAR LOGIC ====================
 
-    // Inhalte für die einzelnen Tage
     const doorContents = {
-            1: {
+      1: {
         title: "1. Dezember",
         text: `I was walking by the road, I do not know why, when the noonday <br>
 was past and bamboo branches rustled in the wind. <br>
@@ -482,30 +481,24 @@ THE GARDENER<br><br>
 By Rabindranath Tagore`,
         // img: "images/tag1.jpg"
       },
-
       2: {
         title: "2. Dezember",
         text: "Ich bin dankbar, dass es dich gibt. Heute: eine extra lange Umarmung. 🤗",
-        // img: "images/tag2.jpg"
       },
       3: {
         title: "3. Dezember",
         text: "Playlist-Surprise! Hör dir unsere Advents-Playlist an.",
         link: "https://example.com/deine-playlist",
         linkLabel: "Zur Playlist 🎵",
-        // img: "images/tag3.jpg"
       },
-      // Beispiel mit Bild:
       4: {
         title: "4. Dezember",
         text: "Ein Lieblingsmoment von uns zwei. 💕",
-        img: "images/tag4.jpg" // Datei vorher in GitHub unter images/tag4.jpg hochladen
+        img: "images/tag4.jpg",
       },
-      // ... weitere Tage 5–23 hier ergänzen ...
       24: {
         title: "24. Dezember",
         text: "Frohe Weihnachten, mein Lieblingsmensch. Danke, dass du bei mir bist. 🎄❤️",
-        // img: "images/tag24.jpg"
       },
     };
 
@@ -540,9 +533,9 @@ By Rabindranath Tagore`,
       const month = now.getMonth(); // 0 = Januar, 11 = Dezember
       const date = now.getDate();
 
-      if (month > 11) return true;  // nach Dezember alles offen
-      if (month < 11) return false; // vor Dezember alles zu
-      return day <= date; // im Dezember: bis zum heutigen Tag
+      if (month > 11) return true;
+      if (month < 11) return false;
+      return day <= date;
     }
 
     function createDoor(day) {
@@ -566,8 +559,6 @@ By Rabindranath Tagore`,
 
       const content = doorContents[day] || getDefaultContent(day);
 
-      // Wenn du statt Zahl ein Türchen-Bild vorne willst, kannst du hier umschalten.
-      // Standard: Zahl anzeigen:
       front.innerHTML = `<span>${day}</span>`;
 
       const back = document.createElement("div");
@@ -618,7 +609,6 @@ By Rabindranath Tagore`,
     }
 
     function buildCalendar() {
-      // Vorheriger Inhalt leeren (wichtig nach Reset)
       while (calendarEl.firstChild) {
         calendarEl.removeChild(calendarEl.firstChild);
       }
@@ -634,9 +624,7 @@ By Rabindranath Tagore`,
       buildCalendar();
     }
 
-    // === BOOTSTRAP: alles anschließen, wenn DOM bereit ist ======
     document.addEventListener("DOMContentLoaded", () => {
-      // Auth-Events
       authButton.addEventListener("click", handleAuthAttempt);
       passwordInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
@@ -644,7 +632,6 @@ By Rabindranath Tagore`,
         }
       });
 
-      // Reset-Button
       const resetBtn = document.getElementById("reset");
       if (resetBtn) {
         resetBtn.addEventListener("click", () => {
@@ -654,14 +641,11 @@ By Rabindranath Tagore`,
             )
           ) {
             saveOpenedState({});
-            // Kein spezieller Auth-Reset: Passwort bleibt gemerkt,
-            // wir bauen den Kalender nach dem Reload einfach neu.
             window.location.reload();
           }
         });
       }
 
-      // Prüfen, ob bereits authentifiziert
       try {
         const ok = localStorage.getItem(AUTH_STORAGE_KEY) === "true";
         if (ok) {
