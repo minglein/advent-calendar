@@ -335,6 +335,57 @@
       box-shadow: 0 10px 26px rgba(15, 23, 42, 0.25);
       object-fit: cover;
     }
+
+    /* === FULLSCREEN OVERLAY FOR POEM === */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+
+    .overlay-inner {
+      position: relative;
+      max-width: 800px;
+      width: 100%;
+      max-height: 85vh;
+      background: #ffffff;
+      border-radius: 1.5rem;
+      box-shadow: 0 25px 50px rgba(15, 23, 42, 0.5);
+      padding: 1.8rem 1.8rem 2rem;
+      overflow-y: auto;
+    }
+
+    .overlay-close {
+      position: absolute;
+      top: 1rem;
+      right: 1.2rem;
+      border: none;
+      background: transparent;
+      font-size: 1.6rem;
+      cursor: pointer;
+      line-height: 1;
+      color: #4b5563;
+    }
+
+    .overlay-close:hover {
+      color: #111827;
+    }
+
+    .poem-title {
+      font-size: 1.3rem;
+      margin-bottom: 0.8rem;
+      text-align: center;
+    }
+
+    .poem-text {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      white-space: normal;
+    }
   </style>
 </head>
 <body>
@@ -391,6 +442,15 @@
       <button id="reset">Alles zurücksetzen</button>
     </footer>
   </div>
+
+  <!-- FULLSCREEN OVERLAY FOR POEM -->
+  <div id="poem-overlay" class="overlay hidden">
+    <div class="overlay-inner">
+      <button id="overlay-close" class="overlay-close" aria-label="Schließen">×</button>
+      <div id="overlay-body"></div>
+    </div>
+  </div>
+
   <script>
     // === SIMPLE PASSWORD PROTECTION (front-end only) =============
 
@@ -406,6 +466,10 @@
 
     const calendarEl = document.getElementById("calendar");
     const STORAGE_KEY = "advent_calendar_opened";
+
+    const overlay = document.getElementById("poem-overlay");
+    const overlayBody = document.getElementById("overlay-body");
+    const overlayClose = document.getElementById("overlay-close");
 
     // aktuell: kein Datums-Lock, damit du alles testen kannst
     const ENABLE_DATE_LOCK = false;
@@ -440,11 +504,29 @@
       }
     }
 
+    function openOverlay(html) {
+      overlayBody.innerHTML = html;
+      overlay.classList.remove("hidden");
+    }
+
+    function closeOverlay() {
+      overlay.classList.add("hidden");
+      overlayBody.innerHTML = "";
+    }
+
+    overlayClose.addEventListener("click", closeOverlay);
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) {
+        closeOverlay();
+      }
+    });
+
     // === ADVENT CALENDAR LOGIC ====================
 
     const doorContents = {
       1: {
         title: "1. Dezember",
+        fullScreen: true, // << Vollbild-Gedicht
         text: `I was walking by the road, I do not know why, when the noonday <br>
 was past and bamboo branches rustled in the wind. <br>
 The prone shadows with their out-stretched arms clung to the feet <br>
@@ -541,11 +623,14 @@ By Rabindranath Tagore`,
       door.className = "door";
       door.dataset.day = day;
 
+      const content = doorContents[day] || getDefaultContent(day);
+
       if (!isDoorUnlocked(day)) {
         door.classList.add("door-locked");
       }
 
-      if (openedState[day]) {
+      if (openedState[day] && !content.fullScreen) {
+        // Vollbild-Inhalt muss nicht "aufgeklappt" bleiben
         door.classList.add("door-open");
       }
 
@@ -554,8 +639,6 @@ By Rabindranath Tagore`,
 
       const front = document.createElement("div");
       front.className = "door-front";
-
-      const content = doorContents[day] || getDefaultContent(day);
 
       front.innerHTML = `<span>${day}</span>`;
 
@@ -583,12 +666,12 @@ By Rabindranath Tagore`,
       inner.appendChild(back);
       door.appendChild(inner);
 
-      door.addEventListener("click", () => handleDoorClick(door, day));
+      door.addEventListener("click", () => handleDoorClick(door, day, content));
 
       return door;
     }
 
-    function handleDoorClick(door, day) {
+    function handleDoorClick(door, day, content) {
       if (door.classList.contains("door-locked")) {
         const now = new Date();
         if (now.getMonth() !== 11) {
@@ -599,6 +682,19 @@ By Rabindranath Tagore`,
         return;
       }
 
+      // Spezialfall: Vollbild-Inhalt (z.B. Gedicht)
+      if (content && content.fullScreen) {
+        openedState[day] = true;
+        saveOpenedState(openedState);
+
+        openOverlay(`
+          <h2 class="poem-title">${content.title}</h2>
+          <div class="poem-text">${content.text}</div>
+        `);
+        return;
+      }
+
+      // Normale Tür-Animation
       if (!door.classList.contains("door-open")) {
         door.classList.add("door-open");
         openedState[day] = true;
@@ -653,6 +749,5 @@ By Rabindranath Tagore`,
       } catch (e) {}
     });
   </script>
-
 </body>
 </html>
