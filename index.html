@@ -336,55 +336,37 @@
       object-fit: cover;
     }
 
-    /* === FULLSCREEN OVERLAY FOR POEM === */
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 50;
-    }
-
-    .overlay-inner {
-      position: relative;
-      max-width: 800px;
+    /* === FULL-PAGE POEM === */
+    .poem-wrapper {
+      max-width: 900px;
       width: 100%;
-      max-height: 85vh;
-      background: #ffffff;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(16px);
       border-radius: 1.5rem;
-      box-shadow: 0 25px 50px rgba(15, 23, 42, 0.5);
-      padding: 1.8rem 1.8rem 2rem;
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.3);
+      padding: 2.3rem 2rem 2.6rem;
+      max-height: 90vh;
       overflow-y: auto;
     }
 
-    .overlay-close {
-      position: absolute;
-      top: 1rem;
-      right: 1.2rem;
-      border: none;
-      background: transparent;
-      font-size: 1.6rem;
-      cursor: pointer;
-      line-height: 1;
-      color: #4b5563;
-    }
-
-    .overlay-close:hover {
-      color: #111827;
-    }
-
     .poem-title {
-      font-size: 1.3rem;
-      margin-bottom: 0.8rem;
+      font-size: 1.4rem;
       text-align: center;
+      margin-bottom: 1rem;
     }
 
     .poem-text {
-      font-size: 0.95rem;
-      line-height: 1.6;
-      white-space: normal;
+      font-size: 0.98rem;
+      line-height: 1.7;
+    }
+
+    .poem-back {
+      margin-top: 1.5rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-decoration: underline;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -425,7 +407,7 @@
       <div class="header-image">
         <img src="images/IMG_9842.JPG" alt="Überraschungsbild" />
       </div>
-      <h1>Unser 1 digitaler Adventskalender</h1>
+      <h1>Unser digitaler Adventskalender</h1>
       <p>
         Jeden Tag wartet eine kleine Überraschung auf dich.
         Klicke auf das Türchen mit dem heutigen Datum, um es zu öffnen.
@@ -443,14 +425,6 @@
     </footer>
   </div>
 
-  <!-- FULLSCREEN OVERLAY FOR POEM -->
-  <div id="poem-overlay" class="overlay hidden">
-    <div class="overlay-inner">
-      <button id="overlay-close" class="overlay-close" aria-label="Schließen">×</button>
-      <div id="overlay-body"></div>
-    </div>
-  </div>
-
   <script>
     // === SIMPLE PASSWORD PROTECTION (front-end only) =============
 
@@ -466,10 +440,6 @@
 
     const calendarEl = document.getElementById("calendar");
     const STORAGE_KEY = "advent_calendar_opened";
-
-    const overlay = document.getElementById("poem-overlay");
-    const overlayBody = document.getElementById("overlay-body");
-    const overlayClose = document.getElementById("overlay-close");
 
     // aktuell: kein Datums-Lock, damit du alles testen kannst
     const ENABLE_DATE_LOCK = false;
@@ -504,29 +474,11 @@
       }
     }
 
-    function openOverlay(html) {
-      overlayBody.innerHTML = html;
-      overlay.classList.remove("hidden");
-    }
-
-    function closeOverlay() {
-      overlay.classList.add("hidden");
-      overlayBody.innerHTML = "";
-    }
-
-    overlayClose.addEventListener("click", closeOverlay);
-    overlay.addEventListener("click", (e) => {
-      if (e.target === overlay) {
-        closeOverlay();
-      }
-    });
-
     // === ADVENT CALENDAR LOGIC ====================
 
     const doorContents = {
       1: {
         title: "1. Dezember",
-        fullScreen: true, // << Vollbild-Gedicht
         text: `I was walking by the road, I do not know why, when the noonday <br>
 was past and bamboo branches rustled in the wind. <br>
 The prone shadows with their out-stretched arms clung to the feet <br>
@@ -618,6 +570,20 @@ By Rabindranath Tagore`,
       return day <= date;
     }
 
+    function showPoemPage(content) {
+      document.body.innerHTML = `
+        <div class="poem-wrapper">
+          <h1 class="poem-title">${content.title}</h1>
+          <div class="poem-text">
+            ${content.text}
+          </div>
+          <div class="poem-back" onclick="window.location.reload()">
+            Zurück zum Kalender
+          </div>
+        </div>
+      `;
+    }
+
     function createDoor(day) {
       const door = document.createElement("div");
       door.className = "door";
@@ -629,8 +595,7 @@ By Rabindranath Tagore`,
         door.classList.add("door-locked");
       }
 
-      if (openedState[day] && !content.fullScreen) {
-        // Vollbild-Inhalt muss nicht "aufgeklappt" bleiben
+      if (openedState[day]) {
         door.classList.add("door-open");
       }
 
@@ -682,19 +647,15 @@ By Rabindranath Tagore`,
         return;
       }
 
-      // Spezialfall: Vollbild-Inhalt (z.B. Gedicht)
-      if (content && content.fullScreen) {
+      // Tür 1: ganze Seite Gedicht
+      if (day === 1) {
         openedState[day] = true;
         saveOpenedState(openedState);
-
-        openOverlay(`
-          <h2 class="poem-title">${content.title}</h2>
-          <div class="poem-text">${content.text}</div>
-        `);
+        showPoemPage(content);
         return;
       }
 
-      // Normale Tür-Animation
+      // alle anderen Türen: normale Flip-Animation
       if (!door.classList.contains("door-open")) {
         door.classList.add("door-open");
         openedState[day] = true;
