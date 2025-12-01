@@ -100,23 +100,16 @@
       inset: 0;
       border-radius: 0.9rem;
       overflow: hidden;
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
-      transform-style: preserve-3d;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
       box-shadow: 0 6px 14px rgba(15, 23, 42, 0.18);
     }
 
-    .door-front,
-    .door-back {
+    .door-front {
       position: absolute;
       inset: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      backface-visibility: hidden;
-      padding: 0.4rem;
-    }
-
-    .door-front {
       background: var(--door-bg);
       color: #f9fafb;
       font-weight: 700;
@@ -134,21 +127,6 @@
       border: 2px solid rgba(248, 250, 252, 0.3);
     }
 
-    .door-back {
-      background: var(--door-open-bg);
-      color: #111827;
-      transform: rotateY(180deg);
-      text-align: center;
-      font-size: 0.85rem;
-      line-height: 1.3;
-      padding: 0.6rem;
-    }
-
-    .door-open .door-inner {
-      transform: rotateY(180deg) translateY(2px);
-      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.25);
-    }
-
     .door-locked .door-front {
       background: var(--door-locked-bg);
       opacity: 0.85;
@@ -163,30 +141,8 @@
       box-shadow: 0 10px 20px rgba(15, 23, 42, 0.25);
     }
 
-    .door-back strong {
-      display: block;
-      margin-bottom: 0.35rem;
-      font-size: 0.9rem;
-    }
-
-    .door-back a {
-      margin-top: 0.4rem;
-      display: inline-flex;
-      font-size: 0.78rem;
-      text-decoration: none;
-      border-radius: 999px;
-      border: 1px solid rgba(15, 23, 42, 0.2);
-      padding: 0.16rem 0.6rem;
-    }
-
-    .door-back img {
-      margin-top: 0.4rem;
-      max-width: 90%;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.35);
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
+    .door-open .door-front {
+      background: var(--door-open-bg);
     }
 
     footer {
@@ -336,8 +292,8 @@
       object-fit: cover;
     }
 
-    /* === FULL-PAGE POEM === */
-    .poem-wrapper {
+    /* === FULL-PAGE CONTENT === */
+    .page-wrapper {
       max-width: 900px;
       width: 100%;
       background: rgba(255, 255, 255, 0.95);
@@ -349,18 +305,18 @@
       overflow-y: auto;
     }
 
-    .poem-title {
+    .page-title {
       font-size: 1.4rem;
       text-align: center;
       margin-bottom: 1rem;
     }
 
-    .poem-text {
+    .page-text {
       font-size: 0.98rem;
       line-height: 1.7;
     }
 
-    .poem-back {
+    .page-back {
       margin-top: 1.5rem;
       text-align: center;
       font-size: 0.85rem;
@@ -410,7 +366,7 @@
       <h1>Unser digitaler Adventskalender</h1>
       <p>
         Jeden Tag wartet eine kleine Überraschung auf dich.
-        Klicke auf das Türchen mit dem heutigen Datum, um es zu öffnen.
+        Klicke auf das Türchen mit dem heutigen Datum, um eine Seite zu öffnen.
       </p>
     </header>
 
@@ -418,10 +374,10 @@
 
     <footer>
       <span>
-        Türen, die einmal geöffnet wurden, bleiben auf (auf diesem Gerät).
+        Klicke auf ein Türchen, um die Überraschungsseite zu öffnen.
       </span>
       <br />
-      <button id="reset">Alles zurücksetzen</button>
+      <button id="reset">Alle Türchen als „ungesehen“ markieren</button>
     </footer>
   </div>
 
@@ -441,7 +397,7 @@
     const calendarEl = document.getElementById("calendar");
     const STORAGE_KEY = "advent_calendar_opened";
 
-    // aktuell: kein Datums-Lock, damit du alles testen kannst
+    // Datums-Lock aktiv: Türen öffnen sich nur bis zum aktuellen Tag im Dezember
     const ENABLE_DATE_LOCK = true;
 
     function showApp() {
@@ -515,8 +471,7 @@ By Rabindranath Tagore`,
       },
       2: {
         title: "2. Dezember",
-        fullPage: true, // <- sagt dem Code: eigene Seite anzeigen
-        text: "Caspar David Friedrich 💛",
+        text: `Caspar David Friedrich 💛`,
         img: "images/DerMoenchAmMeer.jpg",
         link: "https://www.youtube.com/watch?v=jYTblag7vZk&list=RDjYTblag7vZk&start_radio=1",
         linkLabel: "Chopin Nocturne in C-minor, opus 48 no 1",
@@ -532,6 +487,31 @@ By Rabindranath Tagore`,
         text: "Ein Lieblingsmoment von uns zwei. 💕",
         img: "images/tag4.jpg",
       },
+      5: {
+        title: "5. Dezember",
+        text: "Hier könnte deine nächste Überraschung stehen. ✨",
+      },
+      6: {
+        title: "6. Dezember",
+        text: "Nikolaus! Vielleicht gibt es heute etwas Süßes. 🍫",
+      },
+      7: { title: "7. Dezember", text: "Zeit für einen Spaziergang Hand in Hand. 🚶‍♀️🚶‍♂️" },
+      8: { title: "8. Dezember", text: "Heute nur wir zwei und ein ruhiger Moment. 🌙" },
+      9: { title: "9. Dezember", text: "Eine kleine Erinnerung: Du bist geliebt. ❤️" },
+      10: { title: "10. Dezember", text: "Vielleicht heute mal zusammen kochen? 🍝" },
+      11: { title: "11. Dezember", text: "Ein Tag für Tagträume und Pläne. ☁️" },
+      12: { title: "12. Dezember", text: "Halbzeit Richtung Weihnachten – wir zwei mittendrin. 🎄" },
+      13: { title: "13. Dezember", text: "Heute: mindestens drei Komplimente füreinander. 😉" },
+      14: { title: "14. Dezember", text: "Zeit für einen Filmabend unter der Decke. 🎬" },
+      15: { title: "15. Dezember", text: "Vielleicht ein gemeinsamer Tee und ein gutes Gespräch? 🍵" },
+      16: { title: "16. Dezember", text: "Ich bin so froh, dass es dich gibt. 💌" },
+      17: { title: "17. Dezember", text: "Heute schauen wir alte Fotos an und erinnern uns. 📷" },
+      18: { title: "18. Dezember", text: "Fast Weihnachten – und ich hab schon das größte Geschenk: dich. 🎁" },
+      19: { title: "19. Dezember", text: "Heute ein heimliches Lächeln nur für dich. 😊" },
+      20: { title: "20. Dezember", text: "Vielleicht gemeinsam einen Weihnachtsmarkt besuchen? ✨" },
+      21: { title: "21. Dezember", text: "Der kürzeste Tag, aber unser Licht ist groß. 🕯️" },
+      22: { title: "22. Dezember", text: "Noch zwei Tage – ich freu mich auf alles, was kommt. 🤍" },
+      23: { title: "23. Dezember", text: "Fast geschafft – ein Tag voller Vorfreude. ⭐" },
       24: {
         title: "24. Dezember",
         text: "Frohe Weihnachten, mein Lieblingsmensch. Danke, dass du bei mir bist. 🎄❤️",
@@ -569,19 +549,34 @@ By Rabindranath Tagore`,
       const month = now.getMonth(); // 0 = Januar, 11 = Dezember
       const date = now.getDate();
 
-      if (month > 11) return true;
-      if (month < 11) return false;
-      return day <= date;
+      if (month < 11) return false; // vor Dezember alles zu
+      return day <= date; // im Dezember bis zum aktuellen Tag offen
     }
 
-    function showPoemPage(content) {
+    function showFullPage(content) {
+      const imgHtml = content.img
+        ? `<div style="margin: 1.5rem 0; text-align: center;">
+             <img src="${content.img}" alt="" style="max-width: 100%; border-radius: 16px; box-shadow: 0 8px 20px rgba(15,23,42,0.25);" />
+           </div>`
+        : "";
+
+      const linkHtml = content.link
+        ? `<p style="margin-top: 1rem; text-align: center;">
+             <a href="${content.link}" target="_blank" rel="noopener noreferrer">
+               ${content.linkLabel || "Zur Überraschung"}
+             </a>
+           </p>`
+        : "";
+
       document.body.innerHTML = `
-        <div class="poem-wrapper">
-          <h1 class="poem-title">${content.title}</h1>
-          <div class="poem-text">
+        <div class="page-wrapper">
+          <h1 class="page-title">${content.title}</h1>
+          <div class="page-text">
             ${content.text}
           </div>
-          <div class="poem-back" onclick="window.location.reload()">
+          ${imgHtml}
+          ${linkHtml}
+          <div class="page-back" onclick="window.location.reload()">
             Zurück zum Kalender
           </div>
         </div>
@@ -608,31 +603,9 @@ By Rabindranath Tagore`,
 
       const front = document.createElement("div");
       front.className = "door-front";
-
       front.innerHTML = `<span>${day}</span>`;
 
-      const back = document.createElement("div");
-      back.className = "door-back";
-
-      back.innerHTML = `
-        <div>
-          <strong>${content.title}</strong>
-          <span>${content.text}</span>
-          ${
-            content.img
-              ? `<br/><img src="${content.img}" alt="Überraschung für Tag ${day}" />`
-              : ""
-          }
-          ${
-            content.link
-              ? `<br/><a href="${content.link}" target="_blank" rel="noopener noreferrer">${content.linkLabel || "Zur Überraschung"}</a>`
-              : ""
-          }
-        </div>
-      `;
-
       inner.appendChild(front);
-      inner.appendChild(back);
       door.appendChild(inner);
 
       door.addEventListener("click", () => handleDoorClick(door, day, content));
@@ -651,20 +624,10 @@ By Rabindranath Tagore`,
         return;
       }
 
-      // Tür 1: ganze Seite Gedicht
-      if (day === 1) {
-        openedState[day] = true;
-        saveOpenedState(openedState);
-        showPoemPage(content);
-        return;
-      }
-
-      // alle anderen Türen: normale Flip-Animation
-      if (!door.classList.contains("door-open")) {
-        door.classList.add("door-open");
-        openedState[day] = true;
-        saveOpenedState(openedState);
-      }
+      // Immer ganze Seite anzeigen
+      openedState[day] = true;
+      saveOpenedState(openedState);
+      showFullPage(content);
     }
 
     function buildCalendar() {
@@ -696,7 +659,7 @@ By Rabindranath Tagore`,
         resetBtn.addEventListener("click", () => {
           if (
             confirm(
-              "Möchtest du wirklich alle Türchen zurücksetzen? Sie werden wieder geschlossen."
+              "Möchtest du wirklich alle Türchen zurücksetzen? Sie werden wieder als ungesehen markiert."
             )
           ) {
             saveOpenedState({});
